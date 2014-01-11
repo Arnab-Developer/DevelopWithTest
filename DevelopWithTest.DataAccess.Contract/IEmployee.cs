@@ -21,5 +21,12 @@ namespace DevelopWithTest.DataAccess.Contract
         /// <param name="employeeId">Employee identification number.</param>
         /// <returns>Single Employee record.</returns>
         Models::Employee GetById(int employeeId);
+
+        /// <summary>
+        /// Update employee record.
+        /// </summary>
+        /// <param name="employee">Record to be update.</param>
+        /// <returns>True if successful or false if not.</returns>
+        bool Update(Models.Employee employee);
     }
 }

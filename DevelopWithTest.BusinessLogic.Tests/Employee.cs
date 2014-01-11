@@ -81,6 +81,46 @@ namespace DevelopWithTest.BusinessLogic.Tests
         }
 
         /// <summary>
+        /// Test if Update() work properly in the case of successful database update.
+        /// </summary>
+        [TestMethod]
+        public void IsUpdateWorkingProperlyIfRecordUpdated()
+        {
+            // Arrange.
+            Models::Employee employee = new Models::Employee();
+
+            _mockEmployeeDataAccess
+                .Setup(dataAccess => dataAccess.Update(employee))
+                .Returns(true);
+
+            // Act.
+            bool isUpdated = _businessLogicEmployee.Update(employee);
+
+            // Assert.
+            Assert.IsTrue(isUpdated);
+        }
+
+        /// <summary>
+        /// Test if Update() work properly in the case of unsuccessful database update.
+        /// </summary>
+        [TestMethod]
+        public void IsUpdateWorkingProperlyIfRecordNotUpdated()
+        {
+            // Arrange.
+            Models::Employee employee = new Models::Employee();
+
+            _mockEmployeeDataAccess
+                .Setup(dataAccess => dataAccess.Update(employee))
+                .Returns(false);
+
+            // Act.
+            bool isUpdated = _businessLogicEmployee.Update(employee);
+
+            // Assert.
+            Assert.IsFalse(isUpdated);
+        }
+
+        /// <summary>
         /// Cleanup test case.
         /// </summary>
         [TestCleanup]

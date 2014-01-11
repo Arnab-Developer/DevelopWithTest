@@ -21,5 +21,12 @@ namespace DevelopWithTest.BusinessLogic.Contract
         /// <param name="employeeId">Employee identification number.</param>
         /// <returns>Single Employee record.</returns>
         Models::Employee GetById(int employeeId);
+
+        /// <summary>
+        /// Update an Employee record.
+        /// </summary>
+        /// <param name="employee">Employee to be updated.</param>
+        /// <returns>True if success, false if fail.</returns>
+        bool Update(Models::Employee employee);
     }
 }

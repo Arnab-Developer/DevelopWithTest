@@ -27,7 +27,6 @@ namespace DevelopWithTest.BusinessLogic
         /// <summary>
         /// Get single Employee record by Employee identification number.
         /// </summary>
-        /// <param name="employeeId">Employee identification number.</param>
         /// <returns>Single Employee record.</returns>
         public IList<Models::Employee> GetAll()
         {
@@ -45,12 +44,22 @@ namespace DevelopWithTest.BusinessLogic
         }
 
         /// <summary>
+        /// Update an Employee record.
+        /// </summary>
+        /// <param name="employee">Employee to be updated.</param>
+        /// <returns>True if success, false if fail.</returns>
+        public bool Update(Models.Employee employee)
+        {
+            return _dataAccessEmployee.Update(employee);
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or 
         /// resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
             _dataAccessEmployee.Dispose();
-        }
+        }        
     }
 }

@@ -70,6 +70,31 @@ namespace DevelopWithTest.DataAccess.Tests
         }
 
         /// <summary>
+        /// Test if Update() working properly or not.
+        /// </summary>
+        [TestMethod]
+        public void IsUpdateWorkingProperly()
+        {
+            // Arrange.
+            Models::Employee employee = new Models::Employee() { Id = 1, Name = "test name", Department = "test dept" };
+            bool isUpdated = false;
+
+            // Act.
+            using (_dataAccessEmployee)
+            {
+                isUpdated = _dataAccessEmployee.Update(employee); 
+            }
+
+            // Assert.
+            Assert.IsTrue(isUpdated);
+
+            // Keep the database in same state.
+            _dataAccessEmployee = new DataAccess::Employee();
+            employee = new Models::Employee() { Id = 1, Name = "emp1", Department = "Software" };
+            _dataAccessEmployee.Update(employee);
+        }
+
+        /// <summary>
         /// Cleanup test case.
         /// </summary>
         [TestCleanup]

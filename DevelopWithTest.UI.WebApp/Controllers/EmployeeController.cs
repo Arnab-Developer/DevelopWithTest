@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessLogicContract = DevelopWithTest.BusinessLogic.Contract;
 using Models = DevelopWithTest.Models;
@@ -45,12 +46,47 @@ namespace DevelopWithTest.UI.WebApp.Controllers
         }
 
         /// <summary>
+        /// Return edit view.
+        /// </summary>
+        /// <param name="id">Employee id.</param>
+        /// <returns>Edit view with single Employee record.</returns>
+        public ViewResult Edit(int id)
+        {
+            Models::Employee employee = _bllEmployee.GetById(id);
+            return View(employee);
+        }
+
+        /// <summary>
+        /// Update an Employee record.
+        /// </summary>
+        /// <param name="employee">Employee to be updated.</param>
+        /// <returns>Go to Index if success, return at same view if fail.</returns>
+        [HttpPost]
+        public ActionResult Edit(Models::Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isUpdated = _bllEmployee.Update(employee);
+                if (isUpdated)
+                {
+                    return RedirectToAction("Index", "Employee");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("ModelValidation", "ModelNotValid");
+            }
+
+            return View(employee);
+        }
+
+        /// <summary>
         /// Dispose the Employee controller instence.
         /// </summary>
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-            _bllEmployee.Dispose();            
-        }
+            _bllEmployee.Dispose();
+        }        
     }
 }

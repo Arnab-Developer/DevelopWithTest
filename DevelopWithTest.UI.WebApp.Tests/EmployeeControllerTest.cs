@@ -94,6 +94,64 @@ namespace DevelopWithTest.UI.WebApp.Tests
         }
 
         /// <summary>
+        /// Test if Edit() work properly in the case of successful database update.
+        /// </summary>
+        [TestMethod]
+        public void IsEditWorkingProperlyIfRecordUpdated()
+        {
+            // Arrange.
+            Models::Employee employee = new Models::Employee();
+
+            _mockBllEmployee
+                .Setup(businessLogic => businessLogic.Update(employee))
+                .Returns(true);
+
+            object nameToTest;
+
+            // Act.
+            RedirectToRouteResult rtrEmployee = _controllerEmployee.Edit(employee) as RedirectToRouteResult;
+
+            // Assert.
+            Assert.IsNotNull(rtrEmployee);
+
+            Assert.IsTrue(rtrEmployee.RouteValues.TryGetValue("controller", out nameToTest));
+            Assert.AreEqual("Employee", nameToTest);
+
+            Assert.IsTrue(rtrEmployee.RouteValues.TryGetValue("action", out nameToTest));
+            Assert.AreEqual("Index", nameToTest);
+        }
+
+        /// <summary>
+        /// Test if Edit() work properly in the case of unsuccessful database update.
+        /// </summary>
+        [TestMethod]
+        public void IsEditWorkingProperlyIfRecordNotUpdated()
+        {
+            // Arrange.
+            Models::Employee employee = new Models::Employee() { Id = 1, Name = "emp1", Department = "Software" };
+
+            _mockBllEmployee
+                .Setup(businessLogic => businessLogic.Update(employee))
+                .Returns(false);
+
+            // Act.
+            ViewResult vrEmployee = _controllerEmployee.Edit(employee) as ViewResult;
+
+            Models::Employee employeeToTest = null;
+            if (vrEmployee != null)
+            {
+                employeeToTest = vrEmployee.Model as Models::Employee;
+            }
+
+            // Assert.
+            Assert.IsNotNull(vrEmployee);
+            Assert.IsNotNull(employee);
+
+            Assert.AreEqual("emp1", employee.Name);
+            Assert.AreEqual("Software", employee.Department);
+        }
+
+        /// <summary>
         /// Cleanup test case.
         /// </summary>
         [TestCleanup]

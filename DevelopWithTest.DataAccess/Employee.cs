@@ -111,6 +111,43 @@ namespace DevelopWithTest.DataAccess
         }
 
         /// <summary>
+        /// Update an Employee record.
+        /// </summary>
+        /// <param name="employee">Employee to be updated.</param>
+        /// <returns>True if success, false if fail.</returns>
+        public bool Update(Models.Employee employee)
+        {
+            if (!_isDisposed)
+            {
+                _cmd.CommandText = "UPDATE Employees SET Name=@Name, Department=@Department WHERE EmployeeID=@EmployeeID";
+                
+                _cmd.Parameters.AddWithValue("@Name", employee.Name);
+                _cmd.Parameters.AddWithValue("@Department", employee.Department);
+                _cmd.Parameters.AddWithValue("@EmployeeID", employee.Id);
+
+                if (_con.State != ConnectionState.Open)
+                {
+                    _con.Open(); 
+                }
+
+                int effectedRecords = _cmd.ExecuteNonQuery();
+
+                if (effectedRecords > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or 
         /// resetting unmanaged resources.
         /// </summary>
@@ -127,6 +164,10 @@ namespace DevelopWithTest.DataAccess
         {
             if (!_isDisposed)
             {
+                if (_con.State == ConnectionState.Open)
+                {
+                    _con.Close();
+                }
                 _con.Dispose();
                 _cmd.Dispose();
                 _da.Dispose();
